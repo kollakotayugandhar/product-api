@@ -1,169 +1,158 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const User = require("./models/User");
-const dns=require("dns");
-dns.setServers(['8.8.8.8', '1.1.1.1']);
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+const dns = require('dns');
+const userRouter = require('./routes/userRouter');
+const jwt = require("jsonwebtoken");
+const connectDb = require("./config/db");
+const bcrypt = require("bcrypt");
+const User = require("./model/User");
+require('dotenv').config()
+
+
+dns.setServers(['8.8.8.8', '1.1.1.1']);
+
 app.use(express.json());
-
-mongoose.connect("mongodb+srv://Yuga:aitam@cluster0.g3c3b9z.mongodb.net/?appName=Cluster0")
-
-.then(()=>{
-    console.log("mongodb connected");
-})
-
-.catch((err)=>{
-    console.log(err);
-});
-
-app.get("/",(req,res)=>{
-    res.send("Hello");
-});
+app.use(userRouter);
 
 
 
-app.post("/students/add",async(req,res)=>{
+const db = require("./config/db");
 
-try{
+connectDb();
 
-const user = new User(req.body);
+const verifytoken =(req,res,next)=>{
 
-await user.save();
+    const token = req.headers.authorization;
+    if(!token){
+        return res.send("token missing");
 
-res.send(user);
- 
-}catch(err){
-res.send(err)
-}
-});
-app.get("/users", async (req,res)=>{
-
-    const users = await User.find();
-
-    res.send(users);
-
-});
-app.get("/students",async(req,res)=>{
-try{
-
-    const user = await User.find();
-
-    res.send(user);
-
-}catch(err){
-    console.log(err)
-}
-})
-
-
-
-app.get("/students/:id",async(req,res)=>{
+    }
 
     try{
-   
-
-        const user = await User.findById(req.params.id);
-       res.send(user);
-        
-
-
+        jwt.verify(token,"secretkey");
+       next()
     }catch(err){
-    console.log(err)
-}
-})
 
-app.put("/students/update/:id", async (req, res) => {
-    try {
-        const updatedUser = await User.findByIdAndUpdate(
-            req.params.id, 
-            req.body, 
-            { new: true }
-        );
-        res.send(updatedUser);
-    } catch (err) {
-        res.status(500).send(err);
+        console.log("invalid token")
+
     }
-});
-app.delete("/students/delete/:id",async(req,res)=>{
-
-    const user = await User.findByIdAndDelete(req.params.id);
-
-    res.send(user);
-
-})
+}
 
 
-app.post("/register",async(req,res)=>{
-    try {
-        const {name,email,password} = req.body;
-        const userExists = await User.findOne({ email })
-        if(userExists){
-            return res.end("User already in db");
-        }
-        const hashpassword = await bcrypt.hash(password,13);
-        console.log("hashedPassword",hashpassword);
 
-        const user = new User({
-            name,
-            email,
-            password:hashpassword
-        })
-        await user.save();
+
+
+app.get("/students", async(req, res) => {
+    try{
+
+        const user = await User.find();
+
         res.send(user);
+
     }catch(err){
-        console.log(err);
-        res.send(err);
+        console.groupCollapsed(err);
+    }
+   
+});
+
+app.get("/student/:id", async(req, res)=>{
+    try{
+
+        const user= await User.findById(req.params.id);
+        res.send(user);
+
+    }catch(err){
+        console.log(err)
+
     }
 })
-app.post("/login", async (req,res)=>{
 
+
+app.put("/students/update/:id",async(req,res)=>{
+  
+     try{
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {new:true}
+
+        )
+
+        res.send(user);
+
+     }catch(err){
+
+     }
+
+})
+
+
+
+app.post("/register", async(req, res)=>{
     try{
-    const {email,password} = req.body;
-    const user = await User.findOne({email});
-    if(!user){
-    return res.send("User not found");
-    }
-    const isMatch = await bcrypt.compare(
-            password,
-            user.password
-        );
-    if(!isMatch){
-    return res.send("Invalid credentials");
+        const {name,email,password} =req.body;
+        const userExists = await User.findOne({email})
 
-        }
+      if(userExists){
+        return res.end("user already in db");
+      }
 
-       
-        const token = jwt.sign(
+      const hashpassword = await bcrypt.hash(password,13);
+      console.log("hashpassword",hashpassword)
 
-            {id:user._id},
 
-            "secretkey",
+      const user = new User({
+        name,
+        email,
+        password: hashpassword
+      })
 
-            {expiresIn:"1h"}
+      await user.save();
 
-        );
-
-       
-        res.send({
-
-            message:"Login successful",
-
-            token
-
-        });
+      res.send("User Registered Successfully");
 
     }catch(err){
-
         console.log(err);
 
-        res.status(500).send(err.message);
-
     }
+})
+app.post("/login", async(req,res)=>{
+    try{
 
-});
+        const {email,password} = req.body;
+
+        const user = await User.findOne({email});
+        if (!user){
+            return res.end("user not found");
+        }
+
+        const ismatch = await bcrypt.compare(password,user.password);
+
+        if(!ismatch){
+            return res.end("invalid pswrd");
+        }
+
+        const token = jwt.sign(
+            {id:user._id},
+            "secretkey",
+            {expiresIn:"1h"}
+        )
+        res.send({
+            message:"login successfull",
+            token
+        })
+
+    }catch(err){
+     console.log(err);
+    }
+})
+
+
+
+
+
 app.listen(4000, () => {
     console.log("server started");
 });
-
