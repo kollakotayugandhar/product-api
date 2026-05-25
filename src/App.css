@@ -1,0 +1,264 @@
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+  background-color: #fafafa;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #f0f0f0;
+  border-bottom: 2px solid #333;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
+  padding-bottom: 2px;
+}
+
+.navbar a:hover {
+  border-bottom: 2px solid #333;
+}
+
+.navbar li {
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.navbar li:hover {
+  color: #666;
+}
+
+.navbar input {
+  padding: 8px 12px;
+  border: 1px solid #999;
+  background-color: #fff;
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+
+.home {
+  padding: 40px;
+  background-color: #fafafa;
+  min-height: 60vh;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  background-color: #fff;
+  padding: 40px;
+  border: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  font-size: 36px;
+  color: #333;
+  margin: 0 0 15px 0;
+  font-weight: normal;
+}
+
+.hero-text p {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+}
+
+.hero-text button {
+  padding: 10px 25px;
+  border: 1px solid #333;
+  background-color: #333;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: Georgia, serif;
+  transition: all 0.3s;
+}
+
+.hero-text button:hover {
+  background-color: #555;
+  border-color: #555;
+}
+
+.hero img {
+  width: 350px;
+  height: 250px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+.products-container{
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px;
+  justify-content:center;
+  padding:20px;
+}
+
+.card{
+  width: 50px;
+  border:1px solid #ddd;
+  padding:15px;
+  border-radius:10px;
+}
+
+.card img{
+  width: 50px;;
+  height: 70px;px;
+  object-fit:cover;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  background:black;
+  color:white;
+  border:none;
+}
+
+.footer{
+  background:black;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
+.categories{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.categories button{
+  padding:10px 20px;
+  border:none;
+  background:black;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+}
+.category-buttons button.active{
+  background: linear-gradient(45deg,#00c6ff,#0072ff);
+  transform: scale(1.1);
+}
+.card button{
+  margin:5px;
+  padding:6px 10px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.card button:first-of-type{
+  background:black;
+  color:white;
+}
+
+.card button:last-of-type{
+  background:#ff4d4d;
+  color:white;
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* BACKGROUND ANIMATION */
+.Home {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(-45deg, #ff512f, #dd2476, #24c6dc, #5433ff);
+  background-size: 400% 400%;
+  animation: bgMove 10s ease infinite;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* GLASS BOX */
+.Home-box {
+  text-align: center;
+  max-width: 650px;
+  padding: 40px;
+
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  color: white;
+}
+
+/* TITLE */
+.Home-box h1 {
+  font-size: 45px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+/* TEXT */
+.Home-box p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  font-weight: 300;
+}
+
+/* BUTTON */
+.Home-box button {
+  padding: 14px 35px;
+  border: none;
+  border-radius: 50px;
+
+  background: linear-gradient(45deg, #ff6a00, #ee0979);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* HOVER EFFECT */
+.Home-box button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(45deg, #24c6dc, #5433ff);
+}
